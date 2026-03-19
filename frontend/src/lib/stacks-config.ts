@@ -6,8 +6,8 @@ const CONTRACT_ADDRESS_VALUE = 'SP17XF1J869JJZ32YG0S3QRJAJZVY5X2B95M0EZNA';
 const CONTRACT_NAME_VALUE = 'stack-flow-v1';
 
 // Network type
-export let networkName: 'mainnet' | 'testnet' = NETWORK_ENV;
-export const isMainnet = (networkName as string) === 'mainnet';
+export const networkName: 'mainnet' | 'testnet' = NETWORK_ENV;
+export const isMainnet = networkName === 'mainnet';
 
 const mainnetApiOrigin =
   import.meta.env.VITE_STACKS_MAINNET_API_BASE ?? 'https://api.mainnet.hiro.so';
@@ -39,8 +39,22 @@ export const CONTRACT_NAME = CONTRACT_NAME_VALUE;
 
 // API endpoints
 export const explorerUrl = isMainnet 
-  ? 'https://explorer.stacks.co'
-  : 'https://explorer.stacks.co/?testnet=1';
+  ? 'https://explorer.hiro.so'
+  : 'https://explorer.hiro.so/?chain=testnet';
+
+/** Build a link to view a transaction in the Hiro explorer */
+export function explorerTxUrl(txId: string): string {
+  const base = 'https://explorer.hiro.so';
+  const chain = isMainnet ? '' : '&chain=testnet';
+  return `${base}/txid/${txId}?${chain}`;
+}
+
+/** Build a link to view an address in the Hiro explorer */
+export function explorerAddressUrl(address: string): string {
+  const base = 'https://explorer.hiro.so';
+  const chain = isMainnet ? '' : '&chain=testnet';
+  return `${base}/address/${address}?${chain}`;
+}
 
 type DetectedNetwork = 'mainnet' | 'testnet' | 'unknown';
 
